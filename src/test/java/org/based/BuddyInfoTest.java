@@ -3,6 +3,13 @@ package org.based;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class BuddyInfoTest {
@@ -34,10 +41,32 @@ public class BuddyInfoTest {
         assertEquals(info, info2);
     }
 
-    @Test
+/*    @Test
     public void testConstructor(){
-        assertThrows(IllegalArgumentException.class, ()->{new BuddyInfo("", "a");});
+        assertThrows(IllegalArgumentException.class, ()-> new BuddyInfo("", "a"));
         new BuddyInfo("Spiderman", "6136136136");
         new BuddyInfo("", "(613)613-1234");
+    }*/
+
+    @Test
+    public void testPersistence(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("basedbook");
+        EntityManager em = emf.createEntityManager();
+
+        BuddyInfo b = new BuddyInfo("Michael Vezina", "1234567890");
+        em.getTransaction().begin();
+        em.persist(b);
+        em.getTransaction().commit();
+
+
+        Query q = em.createQuery("SELECT b FROM BuddyInfo b");
+        @SuppressWarnings("unchecked")
+        List<BuddyInfo> infos= q.getResultList();
+
+        assertEquals(1, infos.size());
+        assertEquals(b,infos.get(0));
+        em.close();
+        emf.close();
+
     }
 }

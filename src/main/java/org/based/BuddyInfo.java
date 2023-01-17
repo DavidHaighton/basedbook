@@ -1,18 +1,29 @@
 package org.based;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.regex.Pattern;
 
 /**
  * Information about one of your buddies
  */
-public class BuddyInfo {
+@NoArgsConstructor @Entity
+public class BuddyInfo implements Serializable {
     private final static String PHONE_REGEX = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$";
-    @Getter
-    private final String name;
+    @Getter @Setter
+    private String name;
     @Getter
     private String phone;
+
+    @Id @Getter @GeneratedValue
+    private Integer id;
 
     /**
      * @param name the name of your buddy
@@ -23,7 +34,7 @@ public class BuddyInfo {
         this.setPhone(phone);
     }
 
-    private void setPhone(String phone) {
+    public void setPhone(String phone) {
         final Pattern phoneRegex = Pattern.compile(PHONE_REGEX);
         if(!phoneRegex.matcher(phone).matches()){ throw new IllegalArgumentException("Phone number invalid: "+phone);}
         this.phone = phone;
@@ -45,9 +56,10 @@ public class BuddyInfo {
         if (other == null) {
             return false;
         }
-        if (!(other instanceof final BuddyInfo info)) {
+        if (!(other instanceof BuddyInfo)) {
             return false;
         }
+        BuddyInfo info = (BuddyInfo)other;
         return info.getPhone() == this.getPhone() && info.getName().equals(this.getName());
 
     }
