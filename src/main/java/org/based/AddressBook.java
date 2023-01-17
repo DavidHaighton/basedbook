@@ -1,15 +1,26 @@
 package org.based;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * AddressBook class used to create an address book of your buddies
  */
+@Entity
 public class AddressBook {
-    private final List<BuddyInfo> buddies;
-
-
+    @Id
+    @GeneratedValue
+    @Getter
+    @Setter
+    private Integer id;
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @Getter
+    @Setter
+    private List<BuddyInfo> buddies;
     /**
      * @param buddies the preset buddies to add
      */
@@ -21,7 +32,7 @@ public class AddressBook {
      * Creates an empty address book
      */
     public AddressBook(){
-        this(new ArrayList<>());
+        this(new ArrayList());
     }
 
     /**
