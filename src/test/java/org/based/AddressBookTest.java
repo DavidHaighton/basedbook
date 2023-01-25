@@ -4,18 +4,21 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
+@RunWith(SpringRunner.class)
+@DataJpaTest
 public class AddressBookTest {
 
     private AddressBook book;
+    @Autowired
+    private AddressBookRepository repo;
     @Before
     public void setUp() {
         List<BuddyInfo> a = new ArrayList<>();
@@ -46,27 +49,21 @@ public class AddressBookTest {
 
     @Test
     public void testConstructor(){
-        AddressBook book2 = new AddressBook();
+        new AddressBook();
     }
 
     @Test
     public void testPersistence(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("basedbook");
-        EntityManager em = emf.createEntityManager();
+        repo.deleteAll();
+        assertEquals(0, repo.count());
+        repo.save(book);
+        AddressBook book2 = repo.findById(book.getId());
+        assertEquals(book, book2);
+        assertEquals(1, repo.count());
 
-        em.getTransaction().begin();
-        em.persist(book);
-        em.getTransaction().commit();
+        assertEquals(new BuddyInfo("A", "1234567890"),book2.getBuddies().get(0));
 
-
-        Query q = em.createQuery("SELECT b FROM AddressBook b");
-        @SuppressWarnings("unchecked")
-        List<AddressBook> books= q.getResultList();
-
-        assertEquals(1, books.size());
-        assertEquals(book,books.get(0));
-        em.close();
-        emf.close();
+        repo.deleteAll();
 
     }
 }

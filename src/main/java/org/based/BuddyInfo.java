@@ -1,13 +1,13 @@
 package org.based;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.io.Serializable;
 import java.util.regex.Pattern;
 
@@ -22,7 +22,7 @@ public class BuddyInfo implements Serializable {
     @Getter
     private String phone;
 
-    @Id @Getter @GeneratedValue
+    @Id @Getter @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
     /**

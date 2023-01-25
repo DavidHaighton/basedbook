@@ -2,18 +2,22 @@ package org.based;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-
-import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringRunner.class)
+@DataJpaTest
 public class BuddyInfoTest {
     BuddyInfo info;
+    @Autowired
+    private BuddyInfoRepository repo;
 
     @Before
     public void setUp(){
@@ -41,32 +45,17 @@ public class BuddyInfoTest {
         assertEquals(info, info2);
     }
 
-/*    @Test
-    public void testConstructor(){
-        assertThrows(IllegalArgumentException.class, ()-> new BuddyInfo("", "a"));
-        new BuddyInfo("Spiderman", "6136136136");
-        new BuddyInfo("", "(613)613-1234");
-    }*/
-
     @Test
     public void testPersistence(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("basedbook");
-        EntityManager em = emf.createEntityManager();
 
-        BuddyInfo b = new BuddyInfo("Michael Vezina", "1234567890");
-        em.getTransaction().begin();
-        em.persist(b);
-        em.getTransaction().commit();
+        repo.deleteAll();
+        assertEquals(0, repo.count());
+        repo.save(info);
+        assertEquals(info, repo.findById(info.getId()));
+        assertEquals(1, repo.count());
 
-
-        Query q = em.createQuery("SELECT b FROM BuddyInfo b");
-        @SuppressWarnings("unchecked")
-        List<BuddyInfo> infos= q.getResultList();
-
-        assertEquals(1, infos.size());
-        assertEquals(b,infos.get(0));
-        em.close();
-        emf.close();
+        repo.deleteAll();
 
     }
+
 }
