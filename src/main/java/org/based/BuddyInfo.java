@@ -1,8 +1,6 @@
 package org.based;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,15 +12,17 @@ import java.util.regex.Pattern;
 /**
  * Information about one of your buddies
  */
-@NoArgsConstructor @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Entity
 public class BuddyInfo implements Serializable {
     private final static String PHONE_REGEX = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$";
-    @Getter @Setter
     private String name;
-    @Getter
     private String phone;
 
-    @Id @Getter @GeneratedValue(strategy=GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
     /**
@@ -60,7 +60,7 @@ public class BuddyInfo implements Serializable {
             return false;
         }
         BuddyInfo info = (BuddyInfo)other;
-        return info.getPhone() == this.getPhone() && info.getName().equals(this.getName());
+        return info.getPhone().equals(this.getPhone()) && info.getName().equals(this.getName());
 
     }
 }

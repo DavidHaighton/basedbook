@@ -14,7 +14,7 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
-        /**
+        /*
         AddressBook book = new AddressBook();
         book.addBuddy(new BuddyInfo("Dragon","1111111111"));
         book.addBuddy(new BuddyInfo("SeaOfThieves","2222222222"));
@@ -24,7 +24,7 @@ public class Main {
 
          */
     }
-
+    /*
     @Bean
     public CommandLineRunner demo(BuddyInfoRepository repository) {
         return (args) -> {
@@ -69,4 +69,5 @@ public class Main {
 
         };
     }
+    */
 }

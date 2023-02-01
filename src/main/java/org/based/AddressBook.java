@@ -52,6 +52,18 @@ public class AddressBook {
         }
     }
 
+    public void removeBuddy(long id){
+        removeBuddy(getBuddy(id));
+    }
+    public BuddyInfo getBuddy(long id){
+        for (BuddyInfo b : this.buddies) {
+            if(b.getId() == id){
+                return b;
+            }
+        }
+        throw new RuntimeException("buddy with id "+id+" not found");
+    }
+
     /**
      * @return the address books contents in string form
      */
