@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 /**
  * Information about one of your buddies
  */
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
@@ -22,7 +21,7 @@ public class BuddyInfo implements Serializable {
     private String phone;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Integer id;
 
     /**

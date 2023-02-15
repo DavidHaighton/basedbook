@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Address Books</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link th:href="@{/styles/simple.css}" rel="stylesheet">
+</head>
+<body>
+<h1>Buddy Info Application</h1>
+    <div th:each="book : ${books}">
+        <p th:text="${book}"/>
+        <a th:href="@{books/{b}(b=${book})}" >Link</a>
+    </div>
+    <form action="#" th:action="@{/addy}" method="post">
+        <input type="submit" value="Submit" />
+    </form>
+</body>
+</html>
